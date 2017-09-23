@@ -1,4 +1,4 @@
-<div class="row grey lighten-3" >
+<!-- <div class="row grey lighten-3" >
     <div class="col s12">
     <div class="col s2" *ngFor="let pipeline of board">
         <div class="card-panel light-green darken-3 white-text">{{pipeline.name}}</div>
@@ -17,4 +17,30 @@
       </div>
     </div>
   </div>
-  </div>
+  </div> -->
+
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-2 w-100 p-1 bg-light" *ngFor="let pipeline of board">
+              
+              <div class="alert alert-success" role="alert">
+                  {{pipeline.name}}
+                </div>
+                <div style="font-size:13px;" class="card m-3 text-white bg-success mb-3"  *ngFor="let issue of pipeline.issues">
+                    <div class="card-header ">{{ issue.title }}</div>
+                    <div  class="card-body">
+                    </div>
+                  </div>
+          </div>
+          <div class="col-2 w-100 p-3">
+              <div class="alert alert-success" role="alert">
+                  Closed
+                </div>
+                <div style="font-size:13px;" class="card m-3" *ngFor="let issue of closed_issues">
+                    <div class="card-header">{{ issue.title }}</div>
+                    <div  class="card-body">
+                    </div>
+                  </div>
+          </div>
+      </div>
+    </div>
