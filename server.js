@@ -5,8 +5,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 
 // Get our API routes
-var pipelines = require('./server/routes/pipelines');
-var issues = require('./server/routes/issues');
+var board = require('./server/routes/board');
 
 const app = express();
 
@@ -18,8 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'dist')));
 
 
-app.use('/api/v1/pipelines', pipelines);
-app.use('/api/v1/issues', issues);
+app.use('/api/v1/board', board);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
