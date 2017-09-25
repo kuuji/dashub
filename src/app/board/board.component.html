@@ -19,28 +19,42 @@
   </div>
   </div> -->
 
-  <div class="container-fluid">
-      <div class="row">
-          <div class="col-2 w-100 p-1 bg-light" *ngFor="let pipeline of board">
-              
-              <div class="alert alert-success" role="alert">
-                  {{pipeline.name}}
-                </div>
-                <div style="font-size:13px;" class="card m-3 text-white bg-success mb-3"  *ngFor="let issue of pipeline.issues">
-                    <div class="card-header ">{{ issue.title }}</div>
-                    <div  class="card-body">
-                    </div>
-                  </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2 p-2 bg-light" *ngFor="let pipeline of board">
+      <div class="h-100  bg-light border border-{{pipeline.pipeline_colors}}">
+      <div class="alert alert-{{pipeline.pipeline_colors}}" role="alert">
+        {{pipeline.name}}
+      </div>
+      <div style="font-size:13px;" class="card m-3 text-white bg-{{pipeline.pipeline_colors}} mb-3" *ngFor="let issue of pipeline.issues">
+        <div class="card-header ">{{ issue.title }}</div>
+        <button type="button" class="btn btn-{{pipeline.pipeline_colors}}" data-toggle="modal" [attr.data-target]="'#' + issue.id">
+            More
+          </button>
+        <!-- Modal -->
+        <div class="modal fade text-dark" id="{{issue.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{issue.title}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+              </div>
+              <div class="modal-body">
+                <markdown-to-html [data]="issue.body"></markdown-to-html>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
           </div>
-          <div class="col-2 w-100 p-3">
-              <div class="alert alert-success" role="alert">
-                  Closed
-                </div>
-                <div style="font-size:13px;" class="card m-3" *ngFor="let issue of closed_issues">
-                    <div class="card-header">{{ issue.title }}</div>
-                    <div  class="card-body">
-                    </div>
-                  </div>
-          </div>
+        </div>
       </div>
     </div>
+
+
+
+    </div>
+  </div>
+</div>

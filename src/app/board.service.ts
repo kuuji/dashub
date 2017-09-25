@@ -10,8 +10,4 @@ export class BoardService {
     return this.http.get('/api/v1/board/pipelines')
       .map(res => res.json());
     }
-  getClosedIssues() {
-    return this.http.get('/api/v1/board/closed-issues')
-      .map(res => res.json());
-    }
 }

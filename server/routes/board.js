@@ -15,41 +15,22 @@ router.get('/pipelines', function(req, res, next) {
         var populated_issues = git_issues.filter(filterIssue,pipeline.issues);
         pipeline.issues = populated_issues;
       }, this);
-      res.json(pipelines);
+      getClosedIssues()
+      .then((rsp) => {
+        var git_issues = rsp.data;
+        var closed_pipeline = {};
+        closed_pipeline.name = "Closed";
+        closed_pipeline.issues = git_issues;
+        pipelines.push(closed_pipeline);
+        res.json(pipelines);
+      })
+      .catch((e) => {
+        console.log('Nooo :( errors everywhere', e);
+      })
     })
     .catch((e) => {
       console.log('Nooo :( errors everywhere', e);
     })
-  })
-  .catch((e) => {
-    console.log('Nooo :( errors everywhere', e);
-  })
-});
-
-router.get('/pipelines/:pipeline/issues', function(req, res, next) {
-  getBoard()
-  .then((data) => {
-    var pipelines = data.pipelines;
-    var zen_issues = data.pipelines[req.params.pipeline].issues;
-    getIssues()
-    .then((rsp) => {
-      var git_issues = rsp.data;
-      res.json(git_issues.filter(filterIssue,zen_issues));
-    })
-    .catch((e) => {
-      console.log('Nooo :( errors everywhere', e);
-    })
-  })
-  .catch((e) => {
-    console.log('Nooo :( errors everywhere', e);
-  })
-});
-
-router.get('/closed-issues', function(req, res, next) {
-  getClosedIssues()
-  .then((rsp) => {
-    var git_issues = rsp.data;
-    res.json(git_issues);
   })
   .catch((e) => {
     console.log('Nooo :( errors everywhere', e);

@@ -9,16 +9,17 @@ import { BoardService } from '../board.service';
 export class BoardComponent implements OnInit {
 
   board: any = [];
-  closed_issues: any = [];
+  pipeline_colors: {[pipeline_name : string] : string;}
+  color_class: any = ["secondary","warning","info","primary","success","danger"];
 
   constructor(private boardService: BoardService) { }
 
   ngOnInit() {
     this.boardService.getBoard().subscribe(board => {
+      board.forEach((pipeline,i) => {
+        pipeline.pipeline_colors = this.color_class[i];
+      });
       this.board = board;
-    });
-    this.boardService.getClosedIssues().subscribe(issues => {
-      this.closed_issues = issues;
     });
   }
 
