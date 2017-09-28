@@ -5,9 +5,11 @@ var github_api = require('../config/github');
 
 
 router.get('/pipelines', function(req, res, next) {
+  // get board from zenhub with pipelines and issue ids
   getBoard()
   .then((data) => {
     var pipelines = data.pipelines;
+  // get issue details from github
     getIssues()
     .then((rsp) => {
       var git_issues = rsp.data;
@@ -15,10 +17,13 @@ router.get('/pipelines', function(req, res, next) {
         var populated_issues = git_issues.filter(filterIssue,pipeline.issues);
         pipeline.issues = populated_issues;
       }, this);
+      // Zenhub doesn't provide closed issues 
+      // so we need to get them manually and create the Closed pipeline ourself
       getClosedIssues()
       .then((rsp) => {
         var git_issues = rsp.data;
         var closed_pipeline = {};
+        var comments_promises = [];
         closed_pipeline.name = "Closed";
         closed_pipeline.issues = git_issues;
         pipelines.push(closed_pipeline);
@@ -37,12 +42,33 @@ router.get('/pipelines', function(req, res, next) {
   })
 });
 
+router.get('/:issue_id/comments', function(req, res, next) {
+
+  getComments(req.params.issue_id)
+    .then((rsp) => {
+      var git_comments = rsp.data;
+      // res.json(git_comments.filter(filterComments));
+      res.json(git_comments);
+    })
+    .catch((e) => {
+      console.log('Nooo :( errors everywhere', e);
+    })
+});
+
+
+
+module.exports = router;
+
 var getBoard = function(){
   return zenhub_api.getBoard({ repo_id: process.env.REPO_ID});
 }
 
 var getIssues = function(){
   return github_api.getIssues(process.env.GITHUB_OWNER,process.env.GITHUB_REPO).listIssues({"labels": process.env.LABELS});
+}
+
+var getComments = function(issue_id){
+  return github_api.getIssues(process.env.GITHUB_OWNER,process.env.GITHUB_REPO).listIssueComments(issue_id);
 }
 
 var getClosedIssues = function(){
@@ -58,5 +84,8 @@ var filterIssue = function(git_issue){
   }, this);
   return to_return;
 }
+var filterComments = function(git_comment) {
+  return git_comment.body.includes("🐙");
+}
 
-module.exports = router;
+

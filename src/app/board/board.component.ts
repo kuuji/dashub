@@ -18,9 +18,25 @@ export class BoardComponent implements OnInit {
     this.boardService.getBoard().subscribe(board => {
       board.forEach((pipeline,i) => {
         pipeline.pipeline_colors = this.color_class[i];
+        pipeline.issues.forEach(issue => {
+          this.filterBody(issue);
+          this.boardService.getComments(issue.number).subscribe(comments => {
+            issue.comments = comments.filter(this.filterComments);
+          });
+        });
       });
       this.board = board;
     });
   }
 
+
+    private filterBody(issue: any) {
+        if(!issue.body.includes("🐙")) {
+          issue.body = "";
+        }
+    }
+
+    private filterComments(comments: any) {
+      return comments.body.includes("🐙");
+    }
 }

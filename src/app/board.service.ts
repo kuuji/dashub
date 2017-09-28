@@ -10,4 +10,8 @@ export class BoardService {
     return this.http.get('/api/v1/board/pipelines')
       .map(res => res.json());
     }
+  getComments(issue_id){
+    return this.http.get(`/api/v1/board/${issue_id}/comments`)
+    .map(res => res.json());
+  }
 }
