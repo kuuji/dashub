@@ -1,0 +1,8 @@
+build:
+  - commands:
+    - 'npm install'
+    - 'npm run ng build -prod'
+release_per_server:
+  - roles: ['app']
+    commands:
+      - 'sudo supervisorctl restart all'
