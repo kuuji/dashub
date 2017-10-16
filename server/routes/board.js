@@ -64,7 +64,7 @@ var getBoard = function(){
 }
 
 var getIssues = function(){
-  return github_api.getIssues(process.env.GITHUB_OWNER,process.env.GITHUB_REPO).listIssues({"labels": process.env.LABELS});
+  return github_api.getIssues(process.env.GITHUB_OWNER,process.env.GITHUB_REPO).listIssues({"labels": labels});
 }
 
 var getComments = function(issue_id){
@@ -72,7 +72,7 @@ var getComments = function(issue_id){
 }
 
 var getClosedIssues = function(){
-  return github_api.getIssues(process.env.GITHUB_OWNER,process.env.GITHUB_REPO).listIssues({"labels": process.env.LABELS,"state": "closed"});
+  return github_api.getIssues(process.env.GITHUB_OWNER,process.env.GITHUB_REPO).listIssues({"labels": labels,"state": "closed"});
 }
 
 var filterIssue = function(git_issue){

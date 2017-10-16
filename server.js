@@ -6,9 +6,9 @@ const bodyParser = require('body-parser');
 
 // Get our API routes
 var board = require('./server/routes/board');
-var args = process.argv.slice(2);
+const args = process.argv.slice(2);
 const app = express();
-
+const label = args[1];
 // Parsers for POST data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
