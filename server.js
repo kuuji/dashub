@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 
 // Get our API routes
 var board = require('./server/routes/board');
-
+var args = process.argv.slice(2);
 const app = express();
 
 // Parsers for POST data
@@ -27,7 +27,7 @@ app.get('*', (req, res) => {
 /**
  * Get port from environment and store in Express.
  */
-const port = process.env.PORT || '3000';
+const port = args[0] || '3000';
 app.set('port', port);
 
 /**
