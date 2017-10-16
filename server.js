@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 var board = require('./server/routes/board');
 const args = process.argv.slice(2);
 const app = express();
-const label = args[1];
+global.LABELS = args[1];
 // Parsers for POST data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
